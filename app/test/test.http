@@ -1,0 +1,50 @@
+POST http://localhost:8082/users HTTP/1.1
+content-type: application/json
+
+{"name":"some name","age":24,"friends":[]}
+
+###
+
+GET  http://localhost:8082/users/629e13745054d316cc13c57a HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found) {"message":"NotImplementedException"}
+
+###
+
+PATCH http://localhost:8082/users/629e13745054d316cc13c57a HTTP/1.1
+content-type: application/json
+
+{"age": 25}
+
+###
+
+DELETE http://localhost:8082/users/629e3458cfc9a2f1ef28237f HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found)
+
+###
+
+PUT  http://localhost:8082/users/629e3d77e54b07e3513bae01/friends HTTP/1.1
+content-type: application/json
+
+{"target_id":"628badfa34d0c1b8c1c01b42"}
+
+###
+
+GET  http://localhost:8082/users/629e3d77e54b07e3513bae01/friends HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found)
+
+###
+
+DELETE http://localhost:8082/users/628bb04634d0c1b8c1c01b43/friends/629e3d77e54b07e3513bae01 HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found)
