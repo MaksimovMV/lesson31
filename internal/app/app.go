@@ -5,8 +5,6 @@ import (
 	"app/internal/storage"
 	"context"
 	"github.com/go-chi/chi/v5"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
 	"os"
@@ -20,12 +18,11 @@ func Run(addr string) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
-	if err != nil {
 
+	s, err := storage.NewStorage(ctx, "user")
+	if err != nil {
+		log.Fatal(err)
 	}
-	database := client.Database("test")
-	s := storage.NewStorage(database, "user")
 	controller.Build(r, s)
 
 	server := &http.Server{Addr: addr, Handler: r}

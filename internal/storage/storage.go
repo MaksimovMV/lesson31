@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
 
@@ -14,10 +15,15 @@ type Storage struct {
 	collection *mongo.Collection
 }
 
-func NewStorage(database *mongo.Database, collection string) *Storage {
+func NewStorage(ctx context.Context, collection string) (*Storage, error) {
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect mongoDB, err: %w", err)
+	}
+	database := client.Database("test")
 	return &Storage{
 		collection: database.Collection(collection),
-	}
+	}, nil
 }
 
 func (s *Storage) GetUser(targetID string) (u *model.User, err error) {
